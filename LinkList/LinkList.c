@@ -4,12 +4,16 @@
 
 enum STATUS_CODE // 枚举
 {
+    ONT_FIND ,
     ON_SUCCESS,
     NULL_PTR,
     MALLOC_ERROR,
     INVALID_ACCESS,
 
 };
+/*静态函数只在本源文件（.c )使用*/
+/*静态前置声明*/
+static int LinkListAccordAppointValGetPos(LinkList *pList, ELEMENTTYPE val, int *pPos);
 /*链表初始化*/
 int LinkListInit(LinkList **pList)
 {
@@ -152,8 +156,8 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
     // 跳出循环找到的是哪一个结点？
     LinkNode *needDelNode = travelNode->next;
     travelNode->next = travelNode->next;
-  
-    //travelNode->next = travelNode->next->next;
+
+    // travelNode->next = travelNode->next->next;
 
     /*释放内存*/
     if (needDelNode != NULL)
@@ -161,16 +165,55 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
         free(needDelNode);
         needDelNode = NULL;
     }
-    
 
     /*链表长度减一*/
     (pList->len)--;
     return ret;
 }
 
+static int LinkListAccordAppointValGetPos(LinkList *pList, ELEMENTTYPE val, int *pPos)
+{
+    /*静态函数只给本源文件函数使用，不需要判断合法性*/
+    int ret;
+#if 0
+    int pos = 1;
+    LinkNode *travelNode = pList->head;
+#else
+    int pos = 1;
+    LinkNode *travelNode = pList->head->next;
+#endif
+    while (travelNode != NULL)
+    {
+        if (travelNode->data == val)
+        {
+            /*解引用*/
+            *pPos = pos;
+            return pos;
+        }
+
+        travelNode = travelNode->next;
+        pos++;
+    }
+    *pPos = ONT_FIND;
+    return ONT_FIND;
+}
 /*链表删除指定数据*/
 int LinkListDelAppointData(LinkList *pList, ELEMENTTYPE val)
 {
+    int ret = 0;
+
+    /*元素在链表中的位置*/
+    int pos = 0;
+    /*链表的长度*/
+    int size = 0;
+    while (LinkListGetLength(pList, &size) && pos != ONT_FIND)
+    {
+        /*根据指定位置元素得到在链表中所在的位置*/
+        LinkListAccordAppointValGetPos(pList, val, &pos);
+        LinkListDelAppointPos(pList, pos);
+    }
+
+    return ret;
 }
 
 /*获取链表的长度*/
@@ -207,7 +250,6 @@ int LinkListDestroy(LinkList *pList)
         pList->tail = NULL;
     }
     return ret;
-    
 }
 
 /*链表遍历接口*/
