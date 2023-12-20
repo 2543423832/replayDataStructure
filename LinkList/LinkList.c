@@ -4,7 +4,7 @@
 
 enum STATUS_CODE // 枚举
 {
-    ONT_FIND ,
+    ONT_FIND,
     ON_SUCCESS,
     NULL_PTR,
     MALLOC_ERROR,
@@ -146,6 +146,14 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
     LinkNode *travelNode = pList->head;
 #else
 #endif
+    int flag = 0;
+
+    /*需要修改尾指针*/
+    if (pos == pList->len)
+    {
+        /*需要修改尾指针*/
+        flag = 1;
+    }
 
     while (--pos)
     {
@@ -156,6 +164,11 @@ int LinkListDelAppointPos(LinkList *pList, int pos)
     // 跳出循环找到的是哪一个结点？
     LinkNode *needDelNode = travelNode->next;
     travelNode->next = travelNode->next;
+    if (flag)
+    {
+        /* 调整尾指针 */
+        pList->tail = travelNode;
+    }
 
     // travelNode->next = travelNode->next->next;
 
@@ -255,6 +268,7 @@ int LinkListDestroy(LinkList *pList)
 /*链表遍历接口*/
 int LinkListForeach(LinkList *pList)
 {
+
     if (pList == NULL)
     {
         return NULL_PTR;
@@ -268,6 +282,7 @@ int LinkListForeach(LinkList *pList)
         printf("travelNode->data:%d\n", travelNode->data);
     }
 #else
+
     /*travelNode指向链表第一个元素*/
     LinkNode *travelNode = pList->head->next;
     while (travelNode->next != NULL)
