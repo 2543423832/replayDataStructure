@@ -30,6 +30,10 @@ int LinkListInit(LinkList **pList)
     memset(list->head, 0, sizeof(LinkList) * 1);
     list->head->data = 0;
     list->head->next = NULL;
+
+    /*初始化的时候，尾指针 = 头指针*/
+    list->tail = list->head;
+
     /*链表的长度为0*/
     list->len = 0;
 
@@ -80,14 +84,32 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTYPE val)
 #else
     LinkNode *travelNode = pList->head->next;
 #endif
-    while (pos)
+    /*这种情况下需要更改尾指针*/
+    int flag = 0;
+    if (pos == pList->len)
     {
-        travelNode = travelNode->next;
-        pos--;
+        /* 修改结点指向 */
+        travelNode = pList->tail;
     }
+    else
+    {
+        while (pos)
+        {
+            travelNode = travelNode->next;
+            pos--;
+        }
+    }
+
     /*修改结点指向*/
-    newNode->next = travelNode->next;
-    travelNode->next = newNode;
+    newNode->next = travelNode->next; // 1
+    travelNode->next = newNode; // 2
+    if (flag = 0)
+    {
+        /* 尾指针更新位置 */
+        pList->tail = newNode;
+    }
+    
+
     /*更新链表长度*/
     (pList->len)++;
     return ret;
@@ -140,23 +162,23 @@ int LinkListForeach(LinkList *pList)
     {
         return NULL_PTR;
     }
-#if 0
-    /*从虚拟头结点开始遍历*/
+#if 1
+    /*travelNode指向虚拟头结点*/
     LinkNode *travelNode = pList->head;
-     while (travelNode->next != NULL)
+    while (travelNode->next != NULL)
     {
         travelNode = travelNode->next;
-        printf("travelNode->data:%d\n",travelNode->data);
+        printf("travelNode->data:%d\n", travelNode->data);
     }
 #else
+    /*travelNode指向链表第一个元素*/
     LinkNode *travelNode = pList->head->next;
-      while (travelNode->next != NULL)
+    while (travelNode->next != NULL)
     {
-        
-        printf("travelNode->data:%d\n",travelNode->data);
+
+        printf("travelNode->data:%d\n", travelNode->data);
         travelNode = travelNode->next;
     }
-    
+
 #endif
-   
 }
