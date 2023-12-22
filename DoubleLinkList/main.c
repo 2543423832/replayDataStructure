@@ -77,7 +77,7 @@ int main()
     for (int idx = 0; idx < BUFFER_SIZE; idx++)
     {
         LinkListHeadInsert(list, (void *)&buffer[idx]);
-    }
+    } 
     
     /* 获取链表的长度 */
     int size = 0;
