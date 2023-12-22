@@ -159,7 +159,7 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList * pList, int pos, ELEMENTTYPE 
     newNode->next = travelNode->next;       // 1
     newNode->prev = travelNode;             // 2
     travelNode->next = newNode;             // 4
-    
+
     if (flag)
     {
         /* 尾指针更新位置 */
@@ -202,15 +202,20 @@ int DoubleLinkListDelAppointPos(DoubleLinkList * pList, int pos)
 #else
     DoubleLinkNode * travelNOde = pList->head->next;
 #endif 
-
+    DoubleLinkNode * needDelNode = NULL;
     int flag = 0;
     /* 需要修改尾指针 */
     if (pos == pList->len)
     {
         /* 需要修改尾指针 */
         flag = 1;
+
+        /*备份尾指针*/
+        DoubleLinkNode * temNode = pList->tail;
+        pList->tail = pList->tail->prev;
+        needDelNode = temNode;
     }
-    DoubleLinkNode * needDelNode = NULL;
+   else
     while (--pos)
     {
         /* 向后移动位置 */
@@ -219,7 +224,8 @@ int DoubleLinkListDelAppointPos(DoubleLinkList * pList, int pos)
     // 跳出循环找到的是哪一个结点？
     needDelNode = travelNode->next;                 // 1
     travelNode->next = needDelNode->next;           // 2
-    
+    needDelNode->next->prev = travelNode;           // 3
+
     if (flag)
     {
         /* 调整尾指针 */
