@@ -15,7 +15,9 @@ enum STATUS_CODE
 static int compareFunc(ELEMENTTYPE val1, ELEMENTTYPE val2);
 
 /* 创建结点 */
-static BSTreeNode * createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parent);
+static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parent);
+/* 根据指定的值获取二叉搜索树的结点 */
+static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
 /* 二叉搜索树的初始化 */
 int binarySearchTreeInit(BinarySearchTree **pBstree)
@@ -189,33 +191,53 @@ int binarySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val, int (*com
     /* 更新树的结点 */
     (pBstree->size)++;
     return ret;
+}
+
+
+/* 二叉搜索树的前序遍历 */
+int binarySearchTreePreOrderTravel(BinarySearchTree *pBstree)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+/* 二叉搜索树的中序遍历 */
+int binarySearchTreeInOrderTravel(BinarySearchTree *pBstree)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+/* 二叉搜索树的后序遍历 */
+int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+/* 二叉搜索树的层序遍历 */
+int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
+{
+    int ret = 0;
+
+    return ret;
+}
+
+/* 根据指定的值获取二叉搜索树的结点 */
+static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
+{
+    BSTreeNode * travelNode = pBstree->root;
+    while (travelNode != NULL)
+    {
+        /* */
     }
-
-/*二叉搜索树的前序遍历*/
-int binarySearchPreOrderTravel(BinarySearchTree *pBstree)
-{
-    int ret = 0;
-    return ret;
 }
 
-/*二叉搜索树的中序遍历*/
-int binarySearchPreInOrderTravel(BinarySearchTree *pBstree)
+/* 二叉搜索树是否包含指定的元素 */
+int binarySearchTreeIsContainAppointVal(BinarySearchTree *pBstree, ELEMENTTYPE val, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
 {
-    int ret = 0;
-    return ret;
+    baseAppointValGetBSTreeNode(pBstree, val, compareFunc);
 }
-
-/*二叉搜索树的后序遍历*/
-int binarySearchPrePostOrderTravel(BinarySearchTree *pBstree)
-{
-     int ret = 0;
-    return ret;
-}
-
-/*二叉搜索树的层序遍历*/
-int binarySearchPreLeveOrderTravel(BinarySearchTree *pBstree)
-{
-     int ret = 0;
-    return ret;
-}
-
