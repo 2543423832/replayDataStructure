@@ -23,7 +23,7 @@ typedef struct BinarySearchTree
     /* 钩子🪝函数比较器 放到结构体内部. */
     int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2);
 
-    /* 钩子🪝函数 包装器实现自定义打印函数接口. */
+    /* 钩子函数 包装器实现自定义打印函数接口. */
     int (*printFunc)(ELEMENTTYPE val);
 } BinarySearchTree;
 
@@ -49,7 +49,7 @@ int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree);
 int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree);
 
 /* 获取二叉搜索树的高度 */
-int binarySearchTreeGetHeight(BinarySearchTree *pBstree);
+int binarySearchTreeGetHeight(BinarySearchTree *pBstree,int *Height);
 
 /* 二叉搜索树的删除 */
 int binarySearchTreeDelete(BinarySearchTree *pBstree, ELEMENTTYPE val);
