@@ -121,7 +121,7 @@ static BSTreeNode *bstreeNodePreDecessor(BSTreeNode *node)
     }
 
     /* 程序到执行到这个地方 说明一定没有左子树， 需要向父结点找 */
-    while (node->parent != NULL  && node == node->parent->left)
+    while (node->parent != NULL && node == node->parent->left)
     {
         node = node->parent;
     }
@@ -133,6 +133,23 @@ static BSTreeNode *bstreeNodePreDecessor(BSTreeNode *node)
 /* 获取当前结点的后继结点 */
 static BSTreeNode *bstreeNodeSuccessor(BSTreeNode *node)
 {
+    if (node->right != NULL)
+    {
+        BSTreeNode *travelNode = node->right;
+        while (travelNode->right != NULL)
+        {
+            travelNode = travelNode->left;
+        }
+        return travelNode;
+    }
+    /*程序执行到这个地方，说明一定没有右子树，直到找到当前结点是其父结点的左子树*/
+    while (node->parent != NULL && node == node->parent->right)
+    {
+        node = node->parent;
+    }
+    /*node->parent == NULL.*/
+    /*node == node->parent->right.*/
+    return node->parent;
 }
 
 static BSTreeNode *createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *parent)
