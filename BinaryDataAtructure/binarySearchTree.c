@@ -421,7 +421,7 @@ int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight)
     int height = 0;
     DoubleLinkListQueue *pQueue = NULL;             /*创建一个队列*/
     doubleLinkListQueueInit(&pQueue);               /*队列初始化*/
-    doubleLinkListQueuePush(pQueue, pBstree->root); /*队列入队*/
+    doubleLinkListQueuePush(pQueue, pBstree->root); /*根结点入队*/
     BSTreeNode *nodeVal = NULL;
     while (!doubleLinkListQueueIsEmpty(pQueue))
     {
@@ -469,8 +469,9 @@ int binarySearchTreeDestroy(BinarySearchTree *pBstree)
         return NULL_PTR;
     }
     int ret = 0;
-    DoubleLinkListQueue *pQueue = NULL; /*创建一个队列*/
-    doubleLinkListQueueInit(&pQueue);   /*队列初始化*/
+    DoubleLinkListQueue *pQueue = NULL;                 /*创建一个队列*/
+    doubleLinkListQueueInit(&pQueue);                   /*队列初始化*/
+     doubleLinkListQueuePush(pQueue, pBstree->root);    /*根结点入队*/
 
     BSTreeNode * travelNode = NULL;
     while (!doubleLinkListQueueIsEmpty(pQueue))
