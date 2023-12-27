@@ -339,7 +339,7 @@ int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree)
     return ret;
 }
 
-/* 二叉搜索树的层序遍历 *///熟悉并掌握
+/* 二叉搜索树的层序遍历 */ // 熟悉并掌握
 int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
 {
     int ret = 0;
@@ -419,15 +419,15 @@ int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight)
     int ret;
     int count = 1;
     int height = 0;
-    DoubleLinkListQueue * pQueue = NULL;/*创建一个队列*/
-    doubleLinkListQueueInit(&pQueue);/*队列初始化*/
-    doubleLinkListQueuePush(pQueue, pBstree->root);/*队列入队*/
+    DoubleLinkListQueue *pQueue = NULL;             /*创建一个队列*/
+    doubleLinkListQueueInit(&pQueue);               /*队列初始化*/
+    doubleLinkListQueuePush(pQueue, pBstree->root); /*队列入队*/
     BSTreeNode *nodeVal = NULL;
-    while (!doubleLinkListQueueIsEmpty(pQueue))              
+    while (!doubleLinkListQueueIsEmpty(pQueue))
     {
         doubleLinkListQueueTop(pQueue, (void **)&nodeVal);
         doubleLinkListQueuePop(pQueue);
-        count--;/*每一层的结点数*/
+        count--; /*每一层的结点数*/
 
         if (nodeVal->left != NULL)
         {
@@ -460,4 +460,49 @@ int binarySearchTreeDelete(BinarySearchTree *pBstree, ELEMENTTYPE val)
     int ret = 0;
 
     return ret;
+}
+/* 二叉搜索树的销毁 */
+int binarySearchTreeDestroy(BinarySearchTree *pBstree)
+{
+    if (pBstree == NULL)
+    {
+        return NULL_PTR;
+    }
+    int ret = 0;
+    DoubleLinkListQueue *pQueue = NULL; /*创建一个队列*/
+    doubleLinkListQueueInit(&pQueue);   /*队列初始化*/
+
+    BSTreeNode * travelNode = NULL;
+    while (!doubleLinkListQueueIsEmpty(pQueue))
+    {
+        doubleLinkListQueueTop(pQueue, (void **)&travelNode);
+        doubleLinkListQueuePop(pQueue);
+        
+        if (travelNode->left != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, travelNode->left);
+        }
+        if (travelNode->right != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, travelNode->right);
+        }
+        /*释放队列*/
+        if (travelNode)
+        {
+            free(travelNode);
+            travelNode = NULL;
+        }
+    }
+
+    doubleLinkListQueueDestroy(pQueue);
+
+    /*释放树的队列*/
+    if (pBstree)
+    {
+        free(pBstree);
+        pBstree = NULL;
+    }
+    return ret;
+    
+    
 }
