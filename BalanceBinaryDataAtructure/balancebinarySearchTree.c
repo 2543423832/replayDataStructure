@@ -44,6 +44,9 @@ static AVLTreeNode * bstreeNodeSuccessor(AVLTreeNode *node);
 static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
 /* 添加结点之后要做的事情 */
 static int insertNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
+/* 删除结点之后要做的事情 */
+static int removeNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
+
 /* 计算结点的平衡因子 */
 static int AVLTreeNodeBalanceFactor(AVLTreeNode *node);
 /* 判断结果是否平衡 */
@@ -458,7 +461,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
         else if (AVLTreeCurrentNodeIsRight(child))
         {
             /* LR */
-            AVLTreeCurrentNodeRotate();
+            AVLTreeCurrentNodeRotateLeft(pBstree,parent);
+             AVLTreeCurrentNodeRotateRight(parent,node);
 
         }
     }
@@ -468,7 +472,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
         if (AVLTreeCurrentNodeIsLeft(child))
         {
             /* RL */
-            AVLTreeCurrentNodeRotate();
+            AVLTreeCurrentNodeRotateRight(parent);
+            AVLTreeCurrentNodeRotateLeft(pBstree,node);
 
         }
         else if (AVLTreeCurrentNodeIsRight(child))
@@ -481,6 +486,13 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
 }
 
 /* 添加结点之后的操作. */
+/* 删除结点之后要做的事情 */
+static int removeNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
+{
+    int ret = 0;
+    
+    return ret;
+}
 /* 新添加的结点一定是叶子结点 */
 static int insertNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
 {
