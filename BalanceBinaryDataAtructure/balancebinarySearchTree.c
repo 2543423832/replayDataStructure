@@ -46,7 +46,6 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
 static int insertNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
 /* 删除结点之后要做的事情 */
 static int removeNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
-
 /* 计算结点的平衡因子 */
 static int AVLTreeNodeBalanceFactor(AVLTreeNode *node);
 /* 判断结果是否平衡 */
@@ -461,9 +460,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
         else if (AVLTreeCurrentNodeIsRight(child))
         {
             /* LR */
-            AVLTreeCurrentNodeRotateLeft(pBstree,parent);
-             AVLTreeCurrentNodeRotateRight(parent,node);
-
+            AVLTreeCurrentNodeRotateLeft(pBstree, parent);
+            AVLTreeCurrentNodeRotateRight(pBstree, node);
         }
     }
     else
@@ -472,9 +470,8 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
         if (AVLTreeCurrentNodeIsLeft(child))
         {
             /* RL */
-            AVLTreeCurrentNodeRotateRight(parent);
-            AVLTreeCurrentNodeRotateLeft(pBstree,node);
-
+            AVLTreeCurrentNodeRotateRight(pBstree, parent);
+            AVLTreeCurrentNodeRotateLeft(pBstree, node);
         }
         else if (AVLTreeCurrentNodeIsRight(child))
         {
@@ -485,14 +482,31 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
     }
 }
 
-/* 添加结点之后的操作. */
 /* 删除结点之后要做的事情 */
+/* node参数是要删除的结点 */
 static int removeNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
 {
     int ret = 0;
-    
+    /* 时间复杂度是O(logN) */
+    while ( (node = node->parent) != NULL)
+    {
+        /* 程序执行到这里面的时候, 一定不止一个结点. */
+        if (AVLTreeNodeIsBalanced(node))
+        {
+            /* 如果结点是平衡的. 那就更新高度. */
+            AVLTreeNodeUpdateHeight(node);
+        }
+        else
+        {
+            /* node是最低不平衡结点 */
+            /* 调整平衡 */
+            AVLTreeNodeAdjustBalance(pBstree, node);
+        }
+    }
     return ret;
 }
+
+/* 添加结点之后的操作. */
 /* 新添加的结点一定是叶子结点 */
 static int insertNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
 {
@@ -516,9 +530,6 @@ static int insertNodeAfter(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
             break;
         }
     }
-    /* 更新高度... */
-
-    /* 调整平衡... */
     return ret;
 }
 
@@ -842,7 +853,8 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
 
     /* 树的结点减一 */
     (pBstree->size)--;
-
+    
+    /* 删除度为2的结点 */
     if (balanceBinarySearchTreeNodeHasTwochildrens(node))
     {
         /* 找到前驱结点 */
@@ -868,6 +880,9 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
             pBstree->root = child;
 
             delNode = node;
+
+            /* 删除的结点 */
+            removeNodeAfter(pBstree, delNode);
             #if 0
             if (node)
             {   
@@ -889,6 +904,9 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
             }
 
             delNode = node;
+
+            /* 删除的结点 */
+            removeNodeAfter(pBstree, delNode);
             #if 0
             /* 释放结点 */
             if (node)
@@ -906,12 +924,16 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
         {
             /* 度为0 且是根结点 */
             delNode = node;
+
+            /* 删除的结点 */
+            removeNodeAfter(pBstree, delNode);
             #if 0
             if (node)
             {
                 free(node);
                 node = NULL;
             }
+            
             #endif
         }
         else
@@ -925,8 +947,9 @@ static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, A
                 node->parent->right = NULL;
             }
 
-
             delNode = node;
+            /* 删除的结点 */
+            removeNodeAfter(pBstree, delNode);
             #if 0
             if (node)
             {
