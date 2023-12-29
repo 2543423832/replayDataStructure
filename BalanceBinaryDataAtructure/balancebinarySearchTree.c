@@ -299,7 +299,7 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
 {
     /*LL RR LR RL */
     AVLTreeNode *parent = AVLTreeNodeGetChildsTaller(node);
-    AVLTreeNode *child  = AVLTreeNodeGetChildsTaller(parent);
+    AVLTreeNode *child = AVLTreeNodeGetChildsTaller(parent);
     /*L*/
     if (parent == node->left)
     {
@@ -314,7 +314,7 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
     }
     else
     {
-            /*R*/
+        /*R*/
         if (child == parent->left)
         {
             /* RL */
@@ -603,6 +603,15 @@ int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree *pBstree, int *pHei
     {
         return NULL_PTR;
     }
+#if 0
+   /* 判断是否为空树 */
+    if (pBstree->size == 0)
+    {
+        return 0;
+    }
+    *pBstree= pBstree->root->height;
+    return pBstree->root->height;
+#else
 
     /* 判断是否为空树 */
     if (pBstree->size == 0)
